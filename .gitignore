@@ -1,4 +1,6 @@
 
+# Rider
+/.idea/
 ###> symfony/framework-bundle ###
 /.env*
 /config/secrets/prod/prod.decrypt.private.php
