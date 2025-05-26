@@ -11,23 +11,30 @@ class Ingredient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank()]
     #[Assert\Length(min: 2, max: 50)]
-    private ?string $name = null;
+    private string $name;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'float')]
     #[Assert\NotNull()]
     #[Assert\Positive()]
     #[Assert\LessThan(200)]
-    private ?float $price = null;
+    private float $price;
 
-    #[ORM\Column]
+    #[ORM\Column(type:'datetime_immutable')]
     #[Assert\NotNull()]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
+
+    /**
+     * Ctor
+     */
+    public function __construct(){
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
