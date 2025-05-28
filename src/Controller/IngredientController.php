@@ -91,6 +91,7 @@ class IngredientController extends AbstractController
                 'error',
                 'Votre ingrédient n\'a pas été trouvé'
             );
+            return $this->redirectToRoute('ingredient.index');
         }
         $manager->remove($ingredient);
         $manager->flush();

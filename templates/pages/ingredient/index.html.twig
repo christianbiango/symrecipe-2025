@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
+{% import 'macros/flashes.html.twig' as flashes %}
 
 {% block title %}SymRecipe - Mes Ingredients{% endblock %}
 
 {% block body %}
     <div class="container mt-4">
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success mt-4">{{ message }}</div>
-        {% endfor %}
+        {{ flashes.render_flashes() }}
 
         <h1>Mes ingrédients</h1>
         <a href="{{ path("ingredient.new") }}" class="btn btn-primary">Ajouter un ingrédient</a>
