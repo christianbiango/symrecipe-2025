@@ -22,6 +22,8 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Prix</th>
                     <th scope="col">Date de création</th>
+                    <th scope="col">Edition</th>
+                    <th scope="col">Suppression</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +33,8 @@
                         <td>{{ ingredient.name }}</td>
                         <td>{{ ingredient.price }}</td>
                         <td>{{ ingredient.createdAt|date("d/m/Y") }}</td> {# Twig ne comprend pas les objets de PHP - Ici Datetime_immutable donc la pipe permet comme en Linux de passer le grep à la fonction suivante #}
+                        <td><a href="{{ path('ingredient.edit', {id: ingredient.id}) }}" class="btn btn-info">Modifier</a></td>
+                        <td><a href="{{ path('ingredient.delete', {id: ingredient.id}) }}" class="btn btn-danger">Supprimer</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
