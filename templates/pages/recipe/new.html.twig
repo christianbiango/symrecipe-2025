@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+{% import 'macros/flashes.html.twig' as flashes %}
+
+{% block title %}
+    SymRecipe - Nouvelle Recette
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-4">Création d'une recette</h1>
+        {{ form_start(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.time) }}
+        {{ form_row(form.nbPeople) }}
+        {{ form_row(form.difficulty) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.ingredients) }}
+
+        <div class="form-check mt-4">
+            {{ form_row(form.isFavorite) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.submit) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

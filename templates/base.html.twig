@@ -11,6 +11,18 @@
         <link href="
 https://cdn.jsdelivr.net/npm/bootswatch@5.3.6/dist/united/bootstrap.min.css
 " rel="stylesheet">
+        <!-- #HACK temporary -->
+        <style>
+            label.required::after {
+                content: " *";
+                color: red;
+            }
+
+            .form-check .form-check-label.required::after {
+                content: " *";
+                color: red;
+            }
+        </style>
     {% endblock %}
 
 
