@@ -4,8 +4,12 @@
 
 {% block body %}
     <div class="container mt-4">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success mt-4">{{ message }}</div>
+        {% endfor %}
 
         <h1>Mes ingrédients</h1>
+        <a href="{{ path("ingredient.new") }}" class="btn btn-primary">Ajouter un ingrédient</a>
         {% if ingredients %}
             <div class="count mt-4">
                 <h4>Il y a {{ ingredients.getTotalItemCount }} ingrédients au total</h4>
