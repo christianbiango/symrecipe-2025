@@ -7,11 +7,14 @@ use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[IsGranted('ROLE_USER')]
 class RecipeController extends AbstractController
 {
     #[Route('/recette', name: 'recipe.index', methods: ['GET'])]
@@ -53,6 +56,7 @@ class RecipeController extends AbstractController
         return $this->render('pages/recipe/new.html.twig', ['form' => $form->createView()]);
     }
 
+    #[Security("user === recipe.getUserRecipes()")]
     #[Route('/recette/edition/{id}', name: 'recipe.edit', methods: ['GET', 'POST'])]
     public function edit(Recipe $recipe, Request $request, EntityManagerInterface $manager): Response
     {
