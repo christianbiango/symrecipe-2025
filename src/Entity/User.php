@@ -61,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user_ingredient', targetEntity: Ingredient::class, orphanRemoval: true)]
     private Collection $ingredients;
 
+    #[ORM\OneToMany(mappedBy: 'user_recipes', targetEntity: Recipe::class, orphanRemoval: true)]
+    private Collection $recipes;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -183,6 +186,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->ingredients = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getUpdatedAt(): \DateTimeImmutable
@@ -221,6 +225,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($ingredient->getUserIngredient() === $this) {
                 $ingredient->setUserIngredient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): static
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setUserRecipes($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getUserRecipes() === $this) {
+                $recipe->setUserRecipes(null);
             }
         }
 
