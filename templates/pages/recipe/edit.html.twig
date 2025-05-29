@@ -12,12 +12,9 @@
         {{ form_row(form.name) }}
         {{ form_row(form.description) }}
         {{ form_row(form.time) }}
-        {{ form_row(form.nbPeople) }} {# Ajouté pour correspondre à l'ordre de 'new' #}
+        {{ form_row(form.nbPeople) }}
         {{ form_row(form.difficulty) }}
         {{ form_row(form.price) }}
-        {# Le champ 'ingredients' n'est pas présent dans l'entité Recipe telle que tu l'as montrée,
-           mais s'il est ajouté dans RecipeType, il doit être ici.
-           Je l'ajoute pour la cohérence avec 'new', tu peux le retirer si non pertinent. #}
         {{ form_row(form.ingredients) }}
 
         <div class="form-check mt-4">
