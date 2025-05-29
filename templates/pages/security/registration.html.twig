@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+
+{% block title %}
+    SymRecipe - Inscription
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-4">
+            Formulaire d'inscription
+        </h1>
+        <div>
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {{ form_start(form) }}
+
+            <div class="form-group">
+                {{ form_label(form.full_name) }}
+                {{ form_widget(form.full_name) }}
+                {{ form_errors(form.full_name) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.pseudo) }}
+                {{ form_widget(form.pseudo) }}
+                {{ form_errors(form.pseudo) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.plainPassword.first) }}
+                {{ form_widget(form.plainPassword.first) }}
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.plainPassword.second) }}
+                {{ form_widget(form.plainPassword.second) }}
+                {{ form_errors(form.plainPassword.second) }}
+                {{ form_errors(form.plainPassword) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_row(form.submit) }}
+            </div>
+
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
+{% import 'macros/flashes.html.twig' as flashes %}
 
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
     <div class="container">
         <h1 class="mt-4">Connexion</h1>
+        {{ flashes.render_flashes() }}
 
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
