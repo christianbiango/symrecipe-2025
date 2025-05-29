@@ -64,6 +64,9 @@ class Recipe
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_recipes = null;
 
+    #[ORM\Column]
+    private bool $isPublic;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -222,6 +225,18 @@ class Recipe
     public function setUserRecipes(?User $user_recipes): static
     {
         $this->user_recipes = $user_recipes;
+
+        return $this;
+    }
+
+    public function isIsPublic(): bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): static
+    {
+        $this->isPublic = $isPublic;
 
         return $this;
     }

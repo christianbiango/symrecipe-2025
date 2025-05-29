@@ -14,5 +14,20 @@
             <a class="btn btn-primary btn-lg" href="/connexion" role="button">Se connecter</a>
         </p>
     </div>
+        <div class="recipes">
+            <h2 class="mt-4">Recettes de la Communauté</h2>
+            <div class="d-flex justify-content-center flex-wrap">
+                {% for recipe in recipes %}
+                    <div class="card border-primary mb-3" style="max-width:20rem">
+                        <div class="card-header">{{ recipe.name }}</div>
+                        <div class="card-body">
+                            <h4 class="card-title">Recette n°{{ recipe.id }}</h4>
+                            <div class="card-text">{{ recipe.description|slice(0,100) ~ '...'}}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
 {% endblock %}

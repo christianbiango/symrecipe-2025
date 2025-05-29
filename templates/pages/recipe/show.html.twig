@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    SymRecipe - {{ recipe.name }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-4">{{ recipe.name }}</h1>
+        {% if recipe.time %}
+            <p>Temps (en minutes) : {{ recipe.time }}</p>
+        {% else %}
+            <p>Temps non renseigné</p>
+        {% endif %}
+
+        {% if recipe.nbPeople %}
+            <p>Pour : {{ recipe.nbPeople }} personnes</p>
+        {% else %}
+            <p>Non renseigné</p>
+        {% endif %}
+
+        {% if recipe.price %}
+            <p>Prix (en €) : {{ recipe.price }}</p>
+        {% else %}
+            <p>Non renseigné</p>
+        {% endif %}
+
+        <p>Difficulté : {{ recipe.difficulty }}/5</p>
+
+        <p>Date de création : {{ recipe.createdAt|date("d/m/Y") }}</p>
+        <div>
+            {{ recipe.description|raw }}
+        </div>
+
+        <p>Ingredients</p>
+        {% for ingredient in recipe.ingredients %}
+            <span class="badge bg-primary">{{ ingredient.name }}</span>
+        {% endfor %}
+    </div>
+{% endblock %}

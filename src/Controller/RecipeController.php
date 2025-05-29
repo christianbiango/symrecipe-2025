@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_USER')]
 class RecipeController extends AbstractController
 {
+    #[IsGranted('ROLE_USER')]
     #[Route('/recette', name: 'recipe.index', methods: ['GET'])]
     public function index(RecipeRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -30,7 +30,31 @@ class RecipeController extends AbstractController
             'recipes' => $recipes,
         ]);
     }
+    #[IsGranted('ROLE_USER')]
+    #[Security("recipe.isIsPublic() === true || user === recipe.getUserRecipes()")]
+    #[Route('/recette/vues/{id}', 'recipe.show', methods: ['GET', 'POST'])]
+    public function show(Recipe $recipe): Response
+    {
+        return $this->render('pages/recipe/show.html.twig', [
+            'recipe' => $recipe,
+        ]);
+    }
 
+    #[Route('/recette/publique', 'recipe.index.public', methods: ['GET'])]
+    public function indexPublic(RecipeRepository $repository, PaginatorInterface $paginator, Request $request) : Response
+    {
+        $recipes = $paginator->paginate(
+            $repository->findPublicRecipes(null),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('pages/recipe//index_public.html.twig', [
+            'recipes' => $recipes,
+        ]);
+    }
+
+    #[IsGranted('ROLE_USER')]
     #[Route('/recette/creation', name: 'recipe.new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager) : Response
     {
@@ -56,6 +80,7 @@ class RecipeController extends AbstractController
         return $this->render('pages/recipe/new.html.twig', ['form' => $form->createView()]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Security("user === recipe.getUserRecipes()")]
     #[Route('/recette/edition/{id}', name: 'recipe.edit', methods: ['GET', 'POST'])]
     public function edit(Recipe $recipe, Request $request, EntityManagerInterface $manager): Response
@@ -80,6 +105,8 @@ class RecipeController extends AbstractController
         return $this->render('pages/recipe/edit.html.twig', ["form" => $form->createView()]);
     }
 
+    #[IsGranted('ROLE_USER')]
+    #[Security("user === recipe.getUserRecipes()")]
     #[Route('recette/suppression/{id}', name: 'recipe.delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, ?Recipe $recipe): Response
     {
