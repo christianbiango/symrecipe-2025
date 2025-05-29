@@ -65,14 +65,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             if($hasher->isPasswordValid($user, $form->getData()['plainPassword'])) {
-                //HACK: looks like prePersist only works after the first flush so we have to setPassword for now
-                //$user->setPlainPassword($form->getData()['newPassword']);
-                $user->setPassword(
-                    $hasher->hashPassword(
-                        $user,
-                        $form->getData()['newPassword']
-                    )
-                );
+                //IMPORTANT: For the prePersist entity listener method to work, we have to change at least one table column. Before, plain password wasn't one, thus the error.
+                $user->setUpdatedAt(new \DateTimeImmutable());
+                $user->setPlainPassword($form->getData()['newPassword']);
 
                 $manager->persist($user);
                 $manager->flush();
