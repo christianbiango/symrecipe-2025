@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RegitrationType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted()) {
+        if($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 
             $manager->persist($user);
@@ -59,12 +59,22 @@ class SecurityController extends AbstractController
 
             return $this->redirectToRoute('security.login');
         }
-        echo $error;
+
         return $this->render('pages/security/registration.html.twig', [
             'form' => $form->createView(),
             'last_username' => $lastUsername,
             'error'         => $error,
         ]);
+    }
+
+    /**
+     * This method can be blank - it will be intercepted by the logout firewall.
+     * @return void
+     */
+    #[Route('/deconnexion', name: 'security.logout', methods: ['GET'])]
+    public function logout(): void
+    {
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout firewall.');
     }
 
 }
