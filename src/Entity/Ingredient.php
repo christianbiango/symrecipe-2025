@@ -31,6 +31,10 @@ class Ingredient
     #[Assert\NotNull()]
     private \DateTimeImmutable $createdAt;
 
+    #[ORM\ManyToOne(inversedBy: 'ingredients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user_ingredient = null;
+
     /**
      * Ctor
      */
@@ -82,5 +86,17 @@ class Ingredient
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getUserIngredient(): ?User
+    {
+        return $this->user_ingredient;
+    }
+
+    public function setUserIngredient(?User $user_ingredient): static
+    {
+        $this->user_ingredient = $user_ingredient;
+
+        return $this;
     }
 }
