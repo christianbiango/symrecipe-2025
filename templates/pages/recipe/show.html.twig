@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{% import 'macros/flashes.html.twig' as flashes %}
+
 
 {% block title %}
     SymRecipe - {{ recipe.name }}
@@ -7,6 +9,8 @@
 {% block body %}
     <div class="container">
         <h1 class="mt-4">{{ recipe.name }}</h1>
+        {{ flashes.render_flashes() }}
+        <p>La moyenne de cette recette est de {{ recipe.average|number_format(2, '.', ',') }} / 5</p>
         {% if recipe.time %}
             <p>Temps (en minutes) : {{ recipe.time }}</p>
         {% else %}
@@ -25,7 +29,11 @@
             <p>Non renseigné</p>
         {% endif %}
 
-        <p>Difficulté : {{ recipe.difficulty }}/5</p>
+        {% if recipe.difficulty %}
+            <p>Difficulté : {{ recipe.difficulty }}/5</p>
+        {% else %}
+            <p>Difficulté : Non renseignée</p>
+        {% endif %}
 
         <p>Date de création : {{ recipe.createdAt|date("d/m/Y") }}</p>
         <div>
@@ -36,5 +44,9 @@
         {% for ingredient in recipe.ingredients %}
             <span class="badge bg-primary">{{ ingredient.name }}</span>
         {% endfor %}
+
+        <div class="mark">
+            {{ form(form) }}
+        </div>
     </div>
 {% endblock %}

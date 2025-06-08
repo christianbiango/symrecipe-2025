@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Mark;
 use App\Entity\Recipe;
+use App\Form\MarkType;
 use App\Form\RecipeType;
+use App\Repository\MarkRepository;
 use App\Repository\RecipeRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -33,10 +37,54 @@ class RecipeController extends AbstractController
     #[IsGranted('ROLE_USER')]
     #[Security("recipe.isIsPublic() === true || user === recipe.getUserRecipes()")]
     #[Route('/recette/vues/{id}', 'recipe.show', methods: ['GET', 'POST'])]
-    public function show(Recipe $recipe): Response
+    public function show(Recipe $recipe, Request $request, MarkRepository $markRepository, RecipeRepository $recipeRepository, EntityManagerInterface $manager): Response
     {
+        $mark = new Mark();
+        $form = $this->createForm(MarkType::class, $mark);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $mark->setUserMark($this->getUser())
+                ->setRecipe($recipe);
+
+            $existingMark = $markRepository->findOneBy([
+                'userMark' => $this->getUser(),
+                'recipe' => $recipe
+            ]);
+
+            $isUserRecipe = $recipeRepository->findOneBy([
+                'user_recipes' => $this->getUser()->getId(),
+            ]);
+
+            if($isUserRecipe){
+                $this->addFlash(
+                    'danger',
+                    'Vous ne pouvez pas noter votre propre recette'
+                );
+                return $this->redirectToRoute('recipe.show', ['id' => $recipe->getId()]);
+            }
+
+            if(!$existingMark){
+                $manager->persist($mark);
+            }else{
+                $existingMark->setMark(
+                    $form->getData()->getMark()
+                );
+            }
+
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre note a bien été prise en compte'
+            );
+
+            return $this->redirectToRoute('recipe.show', ['id' => $recipe->getId()]);
+        }
+
         return $this->render('pages/recipe/show.html.twig', [
             'recipe' => $recipe,
+            'form' => $form->createView(),
         ]);
     }
 

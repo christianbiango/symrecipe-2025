@@ -64,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user_recipes', targetEntity: Recipe::class, orphanRemoval: true)]
     private Collection $recipes;
 
+    #[ORM\OneToMany(mappedBy: 'user_mark', targetEntity: Mark::class, orphanRemoval: true)]
+    private Collection $marks;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -187,6 +190,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->updatedAt = new \DateTimeImmutable();
         $this->ingredients = new ArrayCollection();
         $this->recipes = new ArrayCollection();
+        $this->marks = new ArrayCollection();
     }
 
     public function getUpdatedAt(): \DateTimeImmutable
@@ -255,6 +259,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($recipe->getUserRecipes() === $this) {
                 $recipe->setUserRecipes(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mark>
+     */
+    public function getMarks(): Collection
+    {
+        return $this->marks;
+    }
+
+    public function addMark(Mark $mark): static
+    {
+        if (!$this->marks->contains($mark)) {
+            $this->marks->add($mark);
+            $mark->setUserMark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMark(Mark $mark): static
+    {
+        if ($this->marks->removeElement($mark)) {
+            // set the owning side to null (unless already changed)
+            if ($mark->getUserMark() === $this) {
+                $mark->setUserMark(null);
             }
         }
 
