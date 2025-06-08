@@ -9,6 +9,9 @@
 {% block body %}
     <div class="container">
         <h1 class="mt-4">{{ recipe.name }}</h1>
+        <div class="recipe__images">
+            <img style="width:100px; object-fit: contain;" src="{{ vich_uploader_asset(recipe, 'imageFile')   }}" />
+        </div>
         {{ flashes.render_flashes() }}
         <p>La moyenne de cette recette est de {{ recipe.average|number_format(2, '.', ',') }} / 5</p>
         {% if recipe.time %}

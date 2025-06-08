@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class RecipeType extends AbstractType
 {
@@ -116,6 +117,12 @@ class RecipeType extends AbstractType
                 'constraints' => [
                     new Assert\Positive(),
                     new Assert\LessThan(1001)
+                ]
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Image de la recette',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
                 ]
             ])
             ->add('ingredients', EntityType::class, [
