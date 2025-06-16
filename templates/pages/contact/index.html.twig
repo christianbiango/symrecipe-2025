@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% import 'macros/flashes.html.twig' as flashes %}
+
+{% block title %}SymRecipe - Contact{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {{ flashes.render_flashes() }}
+        <h1>Formulaire de contact</h1>
+        {{ form(form) }}
+    </div>
+{% endblock %}

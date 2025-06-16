@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Contact;
 use App\Entity\Ingredient;
 use App\Entity\Mark;
 use App\Entity\Recipe;
@@ -83,6 +84,19 @@ class AppFixtures extends Fixture
                 $manager->persist($mark);
             }
         }
+        // Contact
+        for ($j = 0; $j < 5; $j++) {
+            $contact = new Contact();
+            $contact
+                ->setFullName($this->faker->name())
+                ->setEmail($this->faker->email())
+                ->setSubject("Demande n°" . $j + 1)
+                ->setMessage($this->faker->paragraph());
+
+            $manager->persist($contact);
+        }
+
         $manager->flush();
+
     }
 }
